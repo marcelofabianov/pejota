@@ -23,7 +23,7 @@ func Load() error {
 	}
 
 	viper.SetConfigName("config")
-	viper.AddConfigPath("./config")
+	viper.AddConfigPath("./bootstrap")
 	viper.SetConfigType("yaml")
 
 	if err := viper.ReadInConfig(); err != nil {
