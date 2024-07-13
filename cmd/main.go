@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/marcelofabianov/pejota.git/bootstrap"
-	"github.com/marcelofabianov/pejota.git/pkg/postgres"
+	"github.com/marcelofabianov/pejota/bootstrap"
+	"github.com/marcelofabianov/pejota/pkg/postgres"
 )
 
 func main() {
@@ -14,12 +14,15 @@ func main() {
 		log.Fatalf("Error loading config: %v", err)
 	}
 
+	config := bootstrap.NewConfig()
 	ctx := context.Background()
 
 	// Connect to database
-	db, err := postgres.ConnectDB()
+	db, err := postgres.ConnectDB(*config)
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 	defer db.Close(ctx)
+
+	// ...
 }
