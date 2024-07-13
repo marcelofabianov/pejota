@@ -1,0 +1,11 @@
+log
+  level: debug
+  format: json
+  output: stdout
+
+db
+  host: localhost
+  port: 5432
+  user: user
+  password: password
+  database: pejota_db
