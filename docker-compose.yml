@@ -1,0 +1,24 @@
+services:
+
+  postgres:
+    container_name: postgres
+    restart: always
+    image: 'postgres:16-alpine'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_USER: 'username'
+      POSTGRES_DB: 'pejota_db'
+    volumes:
+      - 'pejota_db:/var/lib/postgresql/data:rw'
+    networks:
+      - pj_network
+
+volumes:
+  pejota_db:
+    driver: local
+
+networks:
+  pj_network:
+    driver: bridge
