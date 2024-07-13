@@ -9,3 +9,6 @@ db:
   user: "user"
   password: "password"
   dbname: "pejota_db"
+
+grpc:
+  address: ":50051"

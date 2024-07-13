@@ -1,4 +1,4 @@
-module github.com/marcelofabianov/pejota.git
+module github.com/marcelofabianov/pejota
 
 go 1.22.4
 

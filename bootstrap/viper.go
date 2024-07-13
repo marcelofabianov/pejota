@@ -6,14 +6,15 @@ import (
 )
 
 type Config struct {
-	LogLevel  string `validate:"required,string,enum=debug|info|warn|error|fatal|panic"`
-	LogFormat string `validate:"required,string,enum=text|json|logfmt"`
-	LogOutput string `validate:"required,string,enum=stdout|stderr"`
-	DbHost    string `validate:"required,string"`
-	DbPort    int    `validate:"required,int"`
-	DbUser    string `validate:"required,string"`
-	DbPass    string `validate:"required,string"`
-	DbName    string `validate:"required,string"`
+	LogLevel    string `validate:"required,string,enum=debug|info|warn|error|fatal|panic"`
+	LogFormat   string `validate:"required,string,enum=text|json|logfmt"`
+	LogOutput   string `validate:"required,string,enum=stdout|stderr"`
+	DbHost      string `validate:"required,string"`
+	DbPort      int    `validate:"required,int"`
+	DbUser      string `validate:"required,string"`
+	DbPass      string `validate:"required,string"`
+	DbName      string `validate:"required,string"`
+	GrpcAddress string `validate:"required,string"`
 }
 
 func Load() error {
@@ -44,18 +45,22 @@ func Load() error {
 	viper.BindEnv("db.password", "DB_PASSWORD")
 	viper.BindEnv("db.name", "DB_NAME")
 
+	// gRPC
+	viper.BindEnv("grpc.address", "GRPC_ADDRESS")
+
 	return nil
 }
 
 func NewConfig() *Config {
 	return &Config{
-		LogLevel:  viper.GetString("log.level"),
-		LogFormat: viper.GetString("log.format"),
-		LogOutput: viper.GetString("log.output"),
-		DbHost:    viper.GetString("db.host"),
-		DbPort:    viper.GetInt("db.port"),
-		DbUser:    viper.GetString("db.user"),
-		DbPass:    viper.GetString("db.password"),
-		DbName:    viper.GetString("db.name"),
+		LogLevel:    viper.GetString("log.level"),
+		LogFormat:   viper.GetString("log.format"),
+		LogOutput:   viper.GetString("log.output"),
+		DbHost:      viper.GetString("db.host"),
+		DbPort:      viper.GetInt("db.port"),
+		DbUser:      viper.GetString("db.user"),
+		DbPass:      viper.GetString("db.password"),
+		DbName:      viper.GetString("db.name"),
+		GrpcAddress: viper.GetString("grpc.address"),
 	}
 }
