@@ -6,13 +6,12 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/marcelofabianov/pejota.git/bootstrap"
+	"github.com/marcelofabianov/pejota/bootstrap"
 )
 
 var db *pgx.Conn
 
-func ConnectDB() (*pgx.Conn, error) {
-	config := bootstrap.NewConfig()
+func ConnectDB(config bootstrap.Config) (*pgx.Conn, error) {
 	host := config.DbHost
 	port := config.DbPort
 	user := config.DbUser
