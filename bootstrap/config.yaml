@@ -8,4 +8,4 @@ db
   port: 5432
   user: user
   password: password
-  database: pejota_db
+  dbname: pejota_db
