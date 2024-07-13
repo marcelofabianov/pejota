@@ -2,11 +2,11 @@ package port
 
 // Service
 
-type GetUserInputService struct {
+type GetUserInputServiceApplication struct {
 	PublicID string `json:"public_id" validate:"required,uuid"`
 }
 
-type GetUserOutputService struct {
+type GetUserOutputServiceApplication struct {
 	PublicID     string `json:"public_id" validate:"required,uuid"`
 	Name         string `json:"name" validate:"required,string,min=3,max=255"`
 	Email        string `json:"email" validate:"required,email"`
@@ -16,14 +16,14 @@ type GetUserOutputService struct {
 	UpdatedAt    string `json:"updated_at" validate:"required,datetime"`
 }
 
-type GetUserService interface {
-	GetUser(input GetUserInputService) (GetUserOutputService, error)
+type GetUserServiceApplication interface {
+	GetUser(input GetUserInputServiceApplication) (GetUserOutputServiceApplication, error)
 }
 
 // UseCase
 
 type GetUserInputUseCase struct {
-	GetUserInputService
+	GetUserInputServiceApplication
 }
 
 type GetUserOutputUseCase struct {

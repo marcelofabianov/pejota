@@ -5,3 +5,9 @@ package port
 type UserRepository interface {
 	GetUserRepository
 }
+
+// Service
+
+type UserServiceApplication interface {
+	GetUserServiceApplication
+}
