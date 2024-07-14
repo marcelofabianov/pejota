@@ -7,6 +7,7 @@
   - [x] Implementar GetUserUseCase
   - [x] Implementar DeleteUserUseCase
   - [-] Implementar UserServiceApplication
+  - [ ] Implementar Email já cadastrado
     - [x] Implementar GetUser
     - [x] Implementar CreateUser
     - [x] Implementar DeleteUser
