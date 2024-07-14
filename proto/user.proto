@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 
 service UserService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
 }
 
 message GetUserRequest {
@@ -15,6 +16,23 @@ message GetUserRequest {
 }
 
 message GetUserResponse {
+  string public_id = 1;
+  string name = 2;
+  string email = 3;
+  string role = 4;
+  bool login_enabled = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+  string role = 4;
+}
+
+message CreateUserResponse {
   string public_id = 1;
   string name = 2;
   string email = 3;
