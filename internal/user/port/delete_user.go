@@ -33,7 +33,7 @@ type FindUserIDByPublicIDInputRepository struct {
 }
 
 type FindUserIDByPublicIDOutputRepository struct {
-	ID string
+	ID int64
 }
 
 type DeleteUserInputRepository struct {

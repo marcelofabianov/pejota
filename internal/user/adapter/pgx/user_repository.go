@@ -84,7 +84,7 @@ func (r *UserRepository) FindUserIDByPublicID(input port.FindUserIDByPublicIDInp
 	}
 
 	output := port.FindUserIDByPublicIDOutputRepository{
-		ID: user.PublicID,
+		ID: user.ID,
 	}
 
 	return output, nil
