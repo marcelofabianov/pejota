@@ -74,3 +74,20 @@ func (s *UserServiceServer) CreateUser(ctx context.Context, req *userpb.CreateUs
 		UpdatedAt:    timestamppb.New(updatedAt),
 	}, nil
 }
+
+func (s *UserServiceServer) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequest) (*userpb.DeleteUserResponse, error) {
+	publicID := req.GetPublicId()
+
+	input := port.DeleteUserInputServiceApplication{
+		PublicID: publicID,
+	}
+
+	user, err := s.application.DeleteUser(input)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "user not found with public_id: %s", publicID)
+	}
+
+	return &userpb.DeleteUserResponse{
+		Success: user.Success,
+	}, nil
+}
