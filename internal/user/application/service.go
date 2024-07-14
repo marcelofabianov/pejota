@@ -72,11 +72,12 @@ func (s *UserServiceApplication) UpdateUser(input port.UpdateUserInputServiceApp
 	}
 
 	return port.UpdateUserOutputServiceApplication{
-		PublicID:  outputUseCase.PublicID,
-		Name:      outputUseCase.Name,
-		Email:     outputUseCase.Email,
-		Role:      outputUseCase.Role,
-		CreatedAt: outputUseCase.CreatedAt,
-		UpdatedAt: outputUseCase.UpdatedAt,
+		PublicID:     outputUseCase.PublicID,
+		Name:         outputUseCase.Name,
+		Email:        outputUseCase.Email,
+		Role:         outputUseCase.Role,
+		LoginEnabled: outputUseCase.LoginEnabled,
+		CreatedAt:    outputUseCase.CreatedAt,
+		UpdatedAt:    outputUseCase.UpdatedAt,
 	}, nil
 }

@@ -8,12 +8,13 @@ type UpdateUserInputServiceApplication struct {
 }
 
 type UpdateUserOutputServiceApplication struct {
-	PublicID  string `json:"public_id"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	Role      string `json:"role"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	PublicID     string `json:"public_id"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	Role         string `json:"role"`
+	LoginEnabled bool   `json:"login_enabled"`
+	CreatedAt    string `json:"created_at"`
+	UpdatedAt    string `json:"updated_at"`
 }
 
 type UpdateUserServiceApplication interface {
@@ -45,12 +46,13 @@ type UpdateUserInputRepository struct {
 }
 
 type UpdateUserOutputRepository struct {
-	PublicID  string
-	Name      string
-	Email     string
-	Role      string
-	CreatedAt string
-	UpdatedAt string
+	PublicID     string
+	Name         string
+	Email        string
+	Role         string
+	LoginEnabled bool
+	CreatedAt    string
+	UpdatedAt    string
 }
 
 type UpdateUserRepository interface {

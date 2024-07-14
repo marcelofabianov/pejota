@@ -40,12 +40,13 @@ func (u *UpdateUserUseCase) Execute(input port.UpdateUserInputUseCase) (port.Upd
 
 	output := port.UpdateUserOutputUseCase{
 		UpdateUserOutputRepository: port.UpdateUserOutputRepository{
-			PublicID:  updateUserOutputRepository.PublicID,
-			Name:      updateUserOutputRepository.Name,
-			Email:     updateUserOutputRepository.Email,
-			Role:      updateUserOutputRepository.Role,
-			CreatedAt: updateUserOutputRepository.CreatedAt,
-			UpdatedAt: updateUserOutputRepository.UpdatedAt,
+			PublicID:     updateUserOutputRepository.PublicID,
+			Name:         updateUserOutputRepository.Name,
+			Email:        updateUserOutputRepository.Email,
+			Role:         updateUserOutputRepository.Role,
+			LoginEnabled: updateUserOutputRepository.LoginEnabled,
+			CreatedAt:    updateUserOutputRepository.CreatedAt,
+			UpdatedAt:    updateUserOutputRepository.UpdatedAt,
 		},
 	}
 
