@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/marcelofabianov/pejota/bootstrap"
+	"github.com/marcelofabianov/pejota/internal/user"
+	"github.com/marcelofabianov/pejota/internal/user/port"
 	"github.com/marcelofabianov/pejota/pkg/postgres"
 )
 
@@ -24,5 +26,18 @@ func main() {
 	}
 	defer db.Close(ctx)
 
-	//... construi containers dos contextos internos exemplo: user
+	userContainer := user.NewUserContainer(db)
+
+	err = userContainer.Invoke(func(service port.UserServiceApplication) {
+		user, err := service.GetUser(port.GetUserInputServiceApplication{PublicID: "2401c307-ff9d-4963-895c-8cd7b97d9d67"})
+		if err != nil {
+			log.Fatalf("Error getting user: %v", err)
+		}
+
+		log.Printf("User: %+v", user)
+	})
+
+	if err != nil {
+		log.Fatalf("Error invoking user container: %v", err)
+	}
 }
