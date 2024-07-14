@@ -24,5 +24,5 @@ func main() {
 	}
 	defer db.Close(ctx)
 
-	// ...
+	//... construi containers dos contextos internos exemplo: user
 }
