@@ -72,3 +72,36 @@ func (r *UserRepository) CreateUser(input port.CreateUserInputRepository) (port.
 
 	return output, nil
 }
+
+func (r *UserRepository) FindUserIDByPublicID(input port.FindUserIDByPublicIDInputRepository) (port.FindUserIDByPublicIDOutputRepository, error) {
+	sql := `SELECT id FROM users WHERE public_id = $1 AND deleted_at IS NULL`
+
+	var user domain.User
+	err := r.db.QueryRow(context.Background(), sql, input.PublicID).Scan(&user.ID)
+
+	if err != nil {
+		return port.FindUserIDByPublicIDOutputRepository{}, err
+	}
+
+	output := port.FindUserIDByPublicIDOutputRepository{
+		ID: user.PublicID,
+	}
+
+	return output, nil
+}
+
+func (r *UserRepository) DeleteUser(input port.DeleteUserInputRepository) (port.DeleteUserOutputRepository, error) {
+	sql := `UPDATE users SET deleted_at = $1 WHERE id = $2 RETURNING true`
+
+	_, err := r.db.Exec(context.Background(), sql, input.DeletedAt, input.ID)
+
+	if err != nil {
+		return port.DeleteUserOutputRepository{}, err
+	}
+
+	output := port.DeleteUserOutputRepository{
+		Success: true,
+	}
+
+	return output, nil
+}
