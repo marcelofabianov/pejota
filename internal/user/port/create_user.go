@@ -17,12 +17,13 @@ type CreateUserInputServiceApplication struct {
 }
 
 type CreateUserOutputServiceApplication struct {
-	PublicID  string `json:"public_id"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	Role      string `json:"role"`
-	CreatedAt string `json:"created_at"`
-	UpdateAt  string `json:"updated_at"`
+	PublicID     string `json:"public_id"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	LoginEnabled bool   `json:"login_enabled"`
+	Role         string `json:"role"`
+	CreatedAt    string `json:"created_at"`
+	UpdatedAt    string `json:"updated_at"`
 }
 
 type CreateUserServiceApplication interface {
@@ -46,19 +47,24 @@ type CreateUserUseCase interface {
 // Repository
 
 type CreateUserInputRepository struct {
-	Name     string `validate:"required,string,min=3,max=255"`
-	Email    string `validate:"required,email"`
-	Password string `validate:"required,string,min=6,max=255"`
-	Role     string `validate:"required,role"`
+	PublicID     string `validate:"required,uuid"`
+	Name         string `validate:"required,string,min=3,max=255"`
+	Email        string `validate:"required,email"`
+	Password     string `validate:"required,string,min=6,max=255"`
+	LoginEnabled bool   `validate:"required,bool"`
+	Role         string `validate:"required,role"`
+	CreatedAt    string `validate:"required,datetime"`
+	UpdatedAt    string `validate:"required,datetime"`
 }
 
 type CreateUserOutputRepository struct {
-	PublicID  string
-	Name      string
-	Email     string
-	Role      string
-	CreatedAt string
-	UpdateAt  string
+	PublicID     string
+	Name         string
+	Email        string
+	LoginEnabled bool
+	Role         string
+	CreatedAt    string
+	UpdatedAt    string
 }
 
 type CreateUserRepository interface {
