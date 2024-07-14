@@ -32,6 +32,21 @@ var defaultConfig = Config{
 	KeyLen:  keyLength,
 }
 
+type Hasher struct {
+	Config Config
+}
+
+func NewHasher() *Hasher {
+	config := Config{
+		Time:    time,
+		Memory:  memory,
+		Threads: threads,
+		KeyLen:  keyLength,
+	}
+
+	return &Hasher{Config: config}
+}
+
 func generateSalt() ([]byte, error) {
 	salt := make([]byte, saltLength)
 	_, err := rand.Read(salt)
@@ -41,7 +56,7 @@ func generateSalt() ([]byte, error) {
 	return salt, nil
 }
 
-func Hash(data string) (string, error) {
+func (h *Hasher) Hash(data string) (string, error) {
 	salt, err := generateSalt()
 	if err != nil {
 		return "", err
@@ -55,7 +70,7 @@ func Hash(data string) (string, error) {
 	return fmt.Sprintf("%s$%s$%s", "argon2id", b64Salt, b64Hash), nil
 }
 
-func Compare(data, encodedHash string) (bool, error) {
+func (h *Hasher) Compare(data, encodedHash string) (bool, error) {
 	parts := strings.Split(encodedHash, "$")
 	if len(parts) != 3 {
 		return false, fmt.Errorf("invalid hash format")
