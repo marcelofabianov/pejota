@@ -5,10 +5,11 @@ import "github.com/marcelofabianov/pejota/internal/user/port"
 type UserServiceApplication struct {
 	getUser    port.GetUserUseCase
 	createUser port.CreateUserUseCase
+	deleteUser port.DeleteUserUseCase
 }
 
-func NewUserServiceApplication(getUser port.GetUserUseCase, createUser port.CreateUserUseCase) port.UserServiceApplication {
-	return &UserServiceApplication{getUser, createUser}
+func NewUserServiceApplication(getUser port.GetUserUseCase, createUser port.CreateUserUseCase, deleteUser port.DeleteUserUseCase) port.UserServiceApplication {
+	return &UserServiceApplication{getUser, createUser, deleteUser}
 }
 
 func (s *UserServiceApplication) GetUser(input port.GetUserInputServiceApplication) (port.GetUserOutputServiceApplication, error) {
@@ -45,5 +46,18 @@ func (s *UserServiceApplication) CreateUser(input port.CreateUserInputServiceApp
 		Role:      outputUseCase.Role,
 		CreatedAt: outputUseCase.CreatedAt,
 		UpdatedAt: outputUseCase.UpdatedAt,
+	}, nil
+}
+
+func (s *UserServiceApplication) DeleteUser(input port.DeleteUserInputServiceApplication) (port.DeleteUserOutputServiceApplication, error) {
+	inputUseCase := port.DeleteUserInputUseCase{DeleteUserInputServiceApplication: input}
+
+	outputUseCase, err := s.deleteUser.Execute(inputUseCase)
+	if err != nil {
+		return port.DeleteUserOutputServiceApplication{}, err
+	}
+
+	return port.DeleteUserOutputServiceApplication{
+		Success: outputUseCase.Success,
 	}, nil
 }
