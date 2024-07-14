@@ -41,13 +41,13 @@ func generateSalt() ([]byte, error) {
 	return salt, nil
 }
 
-func Hash(password string) (string, error) {
+func Hash(data string) (string, error) {
 	salt, err := generateSalt()
 	if err != nil {
 		return "", err
 	}
 
-	hash := argon2.IDKey([]byte(password), salt, defaultConfig.Time, defaultConfig.Memory, defaultConfig.Threads, defaultConfig.KeyLen)
+	hash := argon2.IDKey([]byte(data), salt, defaultConfig.Time, defaultConfig.Memory, defaultConfig.Threads, defaultConfig.KeyLen)
 
 	b64Salt := base64.RawStdEncoding.EncodeToString(salt)
 	b64Hash := base64.RawStdEncoding.EncodeToString(hash)
@@ -55,7 +55,7 @@ func Hash(password string) (string, error) {
 	return fmt.Sprintf("%s$%s$%s", "argon2id", b64Salt, b64Hash), nil
 }
 
-func Compare(password, encodedHash string) (bool, error) {
+func Compare(data, encodedHash string) (bool, error) {
 	parts := strings.Split(encodedHash, "$")
 	if len(parts) != 3 {
 		return false, fmt.Errorf("invalid hash format")
@@ -71,7 +71,7 @@ func Compare(password, encodedHash string) (bool, error) {
 		return false, err
 	}
 
-	newHash := argon2.IDKey([]byte(password), salt, defaultConfig.Time, defaultConfig.Memory, defaultConfig.Threads, uint32(len(hash)))
+	newHash := argon2.IDKey([]byte(data), salt, defaultConfig.Time, defaultConfig.Memory, defaultConfig.Threads, uint32(len(hash)))
 
 	if subtle.ConstantTimeCompare(hash, newHash) == 1 {
 		return true, nil
