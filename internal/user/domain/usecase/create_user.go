@@ -8,21 +8,26 @@ import (
 )
 
 type CreateUserUseCase struct {
+	hasher     port.PasswordHasher
 	repository port.CreateUserRepository
 }
 
-func NewCreateUserUseCase(repository port.CreateUserRepository) port.CreateUserUseCase {
-	return &CreateUserUseCase{repository}
+func NewCreateUserUseCase(hasher port.PasswordHasher, repository port.CreateUserRepository) port.CreateUserUseCase {
+	return &CreateUserUseCase{hasher, repository}
 }
 
 func (u *CreateUserUseCase) Execute(input port.CreateUserInputUseCase) (port.CreateUserOutputUseCase, error) {
 	uuid := uuid.New().String()
+	hashedPassword, err := u.hasher.Hash(input.Password)
+	if err != nil {
+		return port.CreateUserOutputUseCase{}, err
+	}
 
 	repositoryInput := port.CreateUserInputRepository{
 		PublicID:     uuid,
 		Name:         input.Name,
 		Email:        input.Email,
-		Password:     input.Password,
+		Password:     hashedPassword,
 		LoginEnabled: true,
 		Role:         input.Role,
 		CreatedAt:    time.Now().Format(time.RFC3339),
