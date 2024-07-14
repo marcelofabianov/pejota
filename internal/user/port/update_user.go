@@ -37,7 +37,7 @@ type UpdateUserUseCase interface {
 // Repository
 
 type UpdateUserInputRepository struct {
-	PublicID  string `validate:"required,uuid"`
+	ID        int64
 	Name      string `validate:"required,string,min=3,max=255"`
 	Email     string `validate:"required,email"`
 	Role      string `validate:"required,role"`
