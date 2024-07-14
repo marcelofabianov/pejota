@@ -1,10 +1,9 @@
 package pgx
 
 import (
-	"fmt"
+	"context"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/marcelofabianov/pejota/internal/user/domain"
 	"github.com/marcelofabianov/pejota/internal/user/port"
@@ -19,19 +18,18 @@ func NewUserRepository(db *pgx.Conn) port.UserRepository {
 }
 
 func (r *UserRepository) GetUser(input port.GetUserInputRepository) (port.GetUserOutputRepository, error) {
-	fmt.Println("Finding user with public_id:", input.PublicID)
+	sql := `
+		SELECT public_id, name, email, role, login_enabled, created_at, updated_at
+		FROM users
+		WHERE public_id = $1 AND deleted_at IS NULL
+	`
 
-	uuidStr := uuid.New().String()
+	var user domain.User
+	err := r.db.QueryRow(context.Background(), sql, input.PublicID).
+		Scan(&user.PublicID, &user.Name, &user.Email, &user.Role, &user.LoginEnabled, &user.CreatedAt, &user.UpdatedAt)
 
-	// Mocking user simulation SQL SELECT result
-	user := domain.User{
-		PublicID:     uuidStr,
-		Name:         "Marcelo Fabiano",
-		Email:        "marcelo@email.com",
-		Role:         domain.RoleDeveloper,
-		LoginEnabled: true,
-		CreatedAt:    time.Now(),
-		UpdatedAt:    time.Now(),
+	if err != nil {
+		return port.GetUserOutputRepository{}, err
 	}
 
 	output := port.GetUserOutputRepository{
