@@ -28,16 +28,17 @@ type DeleteUserUseCase interface {
 
 // Repository
 
-type FindUserInputRepository struct {
+type FindUserIDByPublicIDInputRepository struct {
 	PublicID string
 }
 
-type FindUserOutputRepository struct {
+type FindUserIDByPublicIDOutputRepository struct {
 	ID string
 }
 
 type DeleteUserInputRepository struct {
-	FindUserOutputRepository
+	FindUserIDByPublicIDOutputRepository
+	DeletedAt string
 }
 
 type DeleteUserOutputRepository struct {
@@ -45,6 +46,6 @@ type DeleteUserOutputRepository struct {
 }
 
 type DeleteUserRepository interface {
-	FindUser(input FindUserInputRepository) (FindUserOutputRepository, error)
+	FindUserIDByPublicID(input FindUserIDByPublicIDInputRepository) (FindUserIDByPublicIDOutputRepository, error)
 	DeleteUser(input DeleteUserInputRepository) (DeleteUserOutputRepository, error)
 }

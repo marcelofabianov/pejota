@@ -5,6 +5,7 @@ package port
 type UserRepository interface {
 	GetUserRepository
 	CreateUserRepository
+	DeleteUserRepository
 }
 
 // Service
@@ -12,4 +13,5 @@ type UserRepository interface {
 type UserServiceApplication interface {
 	GetUserServiceApplication
 	CreateUserServiceApplication
+	DeleteUserServiceApplication
 }
