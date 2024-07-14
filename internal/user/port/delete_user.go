@@ -28,10 +28,12 @@ type DeleteUserUseCase interface {
 
 // Repository
 
+// using UpdateUserOutputRepository from update_user.go
 type FindUserIDByPublicIDInputRepository struct {
 	PublicID string
 }
 
+// using UpdateUserOutputRepository from update_user.go
 type FindUserIDByPublicIDOutputRepository struct {
 	ID int64
 }
