@@ -1,19 +1,19 @@
 package port
 
-// Service
+// Service Application
 
 type GetUserInputServiceApplication struct {
 	PublicID string `json:"public_id" validate:"required,uuid"`
 }
 
 type GetUserOutputServiceApplication struct {
-	PublicID     string `json:"public_id" validate:"required,uuid"`
-	Name         string `json:"name" validate:"required,string,min=3,max=255"`
-	Email        string `json:"email" validate:"required,email"`
-	Role         string `json:"role" validate:"required,role"`
-	LoginEnabled bool   `json:"login_enabled" validate:"required,bool"`
-	CreatedAt    string `json:"created_at" validate:"required,datetime"`
-	UpdatedAt    string `json:"updated_at" validate:"required,datetime"`
+	PublicID     string `json:"public_id"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	Role         string `json:"role"`
+	LoginEnabled bool   `json:"login_enabled"`
+	CreatedAt    string `json:"created_at"`
+	UpdatedAt    string `json:"updated_at"`
 }
 
 type GetUserServiceApplication interface {
