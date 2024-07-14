@@ -47,13 +47,13 @@ func (r *UserRepository) GetUser(input port.GetUserInputRepository) (port.GetUse
 
 func (r *UserRepository) CreateUser(input port.CreateUserInputRepository) (port.CreateUserOutputRepository, error) {
 	sql := `
-		INSERT INTO users (public_id, name, email, role, login_enabled, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO users (public_id, name, email, password, role, login_enabled, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 		RETURNING public_id
 	`
 
 	var publicID string
-	err := r.db.QueryRow(context.Background(), sql, input.PublicID, input.Name, input.Email, input.Role, input.LoginEnabled, input.CreatedAt, input.UpdatedAt).
+	err := r.db.QueryRow(context.Background(), sql, input.PublicID, input.Name, input.Email, input.Password, input.Role, input.LoginEnabled, input.CreatedAt, input.UpdatedAt).
 		Scan(&publicID)
 
 	if err != nil {
