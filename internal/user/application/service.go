@@ -6,10 +6,11 @@ type UserServiceApplication struct {
 	getUser    port.GetUserUseCase
 	createUser port.CreateUserUseCase
 	deleteUser port.DeleteUserUseCase
+	updateUser port.UpdateUserUseCase
 }
 
-func NewUserServiceApplication(getUser port.GetUserUseCase, createUser port.CreateUserUseCase, deleteUser port.DeleteUserUseCase) port.UserServiceApplication {
-	return &UserServiceApplication{getUser, createUser, deleteUser}
+func NewUserServiceApplication(getUser port.GetUserUseCase, createUser port.CreateUserUseCase, deleteUser port.DeleteUserUseCase, updateUser port.UpdateUserUseCase) port.UserServiceApplication {
+	return &UserServiceApplication{getUser, createUser, deleteUser, updateUser}
 }
 
 func (s *UserServiceApplication) GetUser(input port.GetUserInputServiceApplication) (port.GetUserOutputServiceApplication, error) {
@@ -59,5 +60,23 @@ func (s *UserServiceApplication) DeleteUser(input port.DeleteUserInputServiceApp
 
 	return port.DeleteUserOutputServiceApplication{
 		Success: outputUseCase.Success,
+	}, nil
+}
+
+func (s *UserServiceApplication) UpdateUser(input port.UpdateUserInputServiceApplication) (port.UpdateUserOutputServiceApplication, error) {
+	inputUseCase := port.UpdateUserInputUseCase{UpdateUserInputServiceApplication: input}
+
+	outputUseCase, err := s.updateUser.Execute(inputUseCase)
+	if err != nil {
+		return port.UpdateUserOutputServiceApplication{}, err
+	}
+
+	return port.UpdateUserOutputServiceApplication{
+		PublicID:  outputUseCase.PublicID,
+		Name:      outputUseCase.Name,
+		Email:     outputUseCase.Email,
+		Role:      outputUseCase.Role,
+		CreatedAt: outputUseCase.CreatedAt,
+		UpdatedAt: outputUseCase.UpdatedAt,
 	}, nil
 }
