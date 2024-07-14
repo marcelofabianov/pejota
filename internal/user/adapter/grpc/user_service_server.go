@@ -91,3 +91,32 @@ func (s *UserServiceServer) DeleteUser(ctx context.Context, req *userpb.DeleteUs
 		Success: user.Success,
 	}, nil
 }
+
+func (s *UserServiceServer) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*userpb.UpdateUserResponse, error) {
+	publicID := req.GetPublicId()
+
+	input := port.UpdateUserInputServiceApplication{
+		PublicID: publicID,
+		Name:     req.GetName(),
+		Email:    req.GetEmail(),
+		Role:     req.GetRole(),
+	}
+
+	user, err := s.application.UpdateUser(input)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "user not found with public_id: %s", publicID)
+	}
+
+	createdAt, _ := time.Parse(time.RFC3339, user.CreatedAt)
+	updatedAt, _ := time.Parse(time.RFC3339, user.UpdatedAt)
+
+	return &userpb.UpdateUserResponse{
+		PublicId:     user.PublicID,
+		Name:         user.Name,
+		Email:        user.Email,
+		Role:         user.Role,
+		LoginEnabled: user.LoginEnabled,
+		CreatedAt:    timestamppb.New(createdAt),
+		UpdatedAt:    timestamppb.New(updatedAt),
+	}, nil
+}
