@@ -105,3 +105,31 @@ func (r *UserRepository) DeleteUser(input port.DeleteUserInputRepository) (port.
 
 	return output, nil
 }
+
+func (r *UserRepository) UpdateUser(input port.UpdateUserInputRepository) (port.UpdateUserOutputRepository, error) {
+	sql := `
+		UPDATE users
+		SET name = $1, email = $2, role = $3, updated_at = $4
+		WHERE id = $5
+		RETURNING public_id, name, email, role, created_at, updated_at
+	`
+
+	var user domain.User
+	err := r.db.QueryRow(context.Background(), sql, input.Name, input.Email, input.Role, input.UpdatedAt, input.ID).
+		Scan(&user.PublicID, &user.Name, &user.Email, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+
+	if err != nil {
+		return port.UpdateUserOutputRepository{}, err
+	}
+
+	output := port.UpdateUserOutputRepository{
+		PublicID:  user.PublicID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Role:      string(user.Role),
+		CreatedAt: user.CreatedAt.Format(time.RFC3339),
+		UpdatedAt: user.UpdatedAt.Format(time.RFC3339),
+	}
+
+	return output, nil
+}
