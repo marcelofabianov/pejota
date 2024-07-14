@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx"
+	"github.com/jackc/pgx/v5"
 	"github.com/marcelofabianov/pejota/internal/user/domain"
 	"github.com/marcelofabianov/pejota/internal/user/port"
 )
