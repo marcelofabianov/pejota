@@ -2,11 +2,13 @@ package grpc
 
 import (
 	"context"
+	"time"
 
 	userpb "github.com/marcelofabianov/pejota/internal/user/adapter/grpc/generated"
 	"github.com/marcelofabianov/pejota/internal/user/port"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type UserServiceServer struct {
@@ -32,7 +34,43 @@ func (s *UserServiceServer) GetUser(ctx context.Context, req *userpb.GetUserRequ
 		return nil, status.Errorf(codes.NotFound, "user not found with public_id: %s", publicID)
 	}
 
-	userProto := mapToUserProto(user)
+	createdAt, _ := time.Parse(time.RFC3339, user.CreatedAt)
+	updatedAt, _ := time.Parse(time.RFC3339, user.UpdatedAt)
 
-	return userProto, nil
+	return &userpb.GetUserResponse{
+		PublicId:     user.PublicID,
+		Name:         user.Name,
+		Email:        user.Email,
+		Role:         user.Role,
+		LoginEnabled: user.LoginEnabled,
+		CreatedAt:    timestamppb.New(createdAt),
+		UpdatedAt:    timestamppb.New(updatedAt),
+	}, nil
+}
+
+func (s *UserServiceServer) CreateUser(ctx context.Context, req *userpb.CreateUserRequest) (*userpb.CreateUserResponse, error) {
+	input := port.CreateUserInputServiceApplication{
+		Name:     req.GetName(),
+		Email:    req.GetEmail(),
+		Password: req.GetPassword(),
+		Role:     req.GetRole(),
+	}
+
+	user, err := s.application.CreateUser(input)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "error creating user: %v", err)
+	}
+
+	createdAt, _ := time.Parse(time.RFC3339, user.CreatedAt)
+	updatedAt, _ := time.Parse(time.RFC3339, user.UpdatedAt)
+
+	return &userpb.CreateUserResponse{
+		PublicId:     user.PublicID,
+		Name:         user.Name,
+		Email:        user.Email,
+		Role:         user.Role,
+		LoginEnabled: user.LoginEnabled,
+		CreatedAt:    timestamppb.New(createdAt),
+		UpdatedAt:    timestamppb.New(updatedAt),
+	}, nil
 }
