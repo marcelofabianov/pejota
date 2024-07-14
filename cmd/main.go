@@ -3,11 +3,17 @@ package main
 import (
 	"context"
 	"log"
+	"net"
 
 	"github.com/marcelofabianov/pejota/bootstrap"
 	"github.com/marcelofabianov/pejota/internal/user"
+	server "github.com/marcelofabianov/pejota/internal/user/adapter/grpc"
+	userpb "github.com/marcelofabianov/pejota/internal/user/adapter/grpc/generated"
 	"github.com/marcelofabianov/pejota/internal/user/port"
 	"github.com/marcelofabianov/pejota/pkg/postgres"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -26,18 +32,38 @@ func main() {
 	}
 	defer db.Close(ctx)
 
+	// Create user container
 	userContainer := user.NewUserContainer(db)
 
+	// Invoke user service application
+	var userServiceApp port.UserServiceApplication
 	err = userContainer.Invoke(func(service port.UserServiceApplication) {
-		user, err := service.GetUser(port.GetUserInputServiceApplication{PublicID: "2401c307-ff9d-4963-895c-8cd7b97d9d67"})
-		if err != nil {
-			log.Fatalf("Error getting user: %v", err)
-		}
-
-		log.Printf("User: %+v", user)
+		userServiceApp = service
 	})
-
 	if err != nil {
-		log.Fatalf("Error invoking user container: %v", err)
+		log.Fatalf("Error invoking user service: %v", err)
+	}
+
+	// gRPC server
+	grpcServer := grpc.NewServer()
+	grpcAddress := config.GrpcAddress
+
+	// Register user service server
+	userServiceServer := server.NewUserServiceServer(userServiceApp)
+	userpb.RegisterUserServiceServer(grpcServer, userServiceServer)
+
+	// Reflection
+	reflection.Register(grpcServer)
+
+	// Create listener
+	lis, err := net.Listen("tcp", grpcAddress)
+	if err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
+
+	// Start gRPC server
+	log.Printf("gRPC server listening on %s", grpcAddress)
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("Failed to serve: %v", err)
 	}
 }
