@@ -9,7 +9,7 @@
   - [x] Implementar GetUserUseCase
   - [-] Implementar UserService
     - [x] Implementar GetUser sobre UserService
-    - [ ] Implementar CreateUser sobre UserService
+    - [x] Implementar CreateUser sobre UserService
   - [-] Implementar UserServiceServer do gRPC
     - [x] Implementar GetUser sobre UserServiceServer
   - [-] Implementar server gRPC, Reflection e HealthCheck
