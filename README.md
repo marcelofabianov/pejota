@@ -101,7 +101,7 @@ Até o momento, a estrutura do projeto está da seguinte forma:
 - [x] Atualizar usuário
 - [x] Deletar usuário
 - [x] Desativar login de usuário
-- [ ] Ativar login de usuário
+- [x] Ativar login de usuário
 - [ ] Alterar senha
 
 **Customers**
