@@ -161,10 +161,12 @@ Até o momento, a estrutura do projeto está da seguinte forma:
 
 - [ ] Autenticação e autorização com Keycloak
 - [ ] Log com Zap
-- [ ] Monitoramento com Prometheus
+- [ ] Monitoramento com Prometheus e Elasticstack/Kibana
 - [ ] Tracing com Jaeger
 - [ ] Eventos com RabbitMQ
 - [ ] Envio de e-mails a definir
+- [ ] CI/CD com GitHub Actions
+- [ ] Cache a definir
 
 ## Executando o projeto
 
