@@ -175,6 +175,9 @@ Até o momento, a estrutura do projeto está da seguinte forma:
 - [ ] Cache a definir
 - [x] gRPC com protocol buffers
 - [x] Basear na arquitetura Clean Architecture e Ports and Adapters
+- [ ] Criar rota de healthcheck
+- [ ] Criar rota de informações da aplicação
+- [ ] Acrescentar SSL/TLS gRPC server
 
 ## Executando o projeto
 
