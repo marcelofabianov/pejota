@@ -173,6 +173,8 @@ Até o momento, a estrutura do projeto está da seguinte forma:
 - [ ] Envio de e-mails a definir
 - [ ] CI/CD com GitHub Actions
 - [ ] Cache a definir
+- [x] gRPC com protocol buffers
+- [x] Basear na arquitetura Clean Architecture e Ports and Adapters
 
 ## Executando o projeto
 
