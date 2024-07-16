@@ -32,7 +32,8 @@ type DisableUserLoginUseCase interface {
 // Repository
 
 type DisableUserLoginInputRepository struct {
-	PublicID string
+	PublicID  string
+	UpdatedAt string `validate:"required,datetime"`
 }
 
 type DisableUserLoginOutputRepository struct {
