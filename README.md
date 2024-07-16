@@ -15,8 +15,11 @@ A arquitetura do projeto é baseada no Clean Architecture e Ports and Adapters.
 - [Viper](https://pkg.go.dev/github.com/spf13/viper)
 - [Dig](https://pkg.go.dev/go.uber.org/dig)
 - [Zap](https://pkg.go.dev/go.uber.org/zap)
+- [Goose](https://pkg.go.dev/github.com/pressly/goose)
 - [Argo2 com Crypto](golang.org/x/crypto)
 - [RabbitMQ](https://www.rabbitmq.com/)
+- [Keycloak](https://www.keycloak.org/)
+- [Docker](https://www.docker.com/)
 
 ## Requisitos
 
@@ -84,7 +87,7 @@ Até o momento, a estrutura do projeto está da seguinte forma:
 
 ## Funcionalidades
 
-Users
+**Users**
 
 - [x] Cadastrar usuário
 - [x] Listar usuários com paginação, ordenação e filtro
@@ -94,7 +97,7 @@ Users
 - [ ] Desativar login de usuário
 - [ ] Ativar login de usuário
 
-Customers
+**Customers**
 
 - [ ] Cadastrar cliente
 - [ ] Listar clientes com paginação, ordenação e filtro
@@ -102,7 +105,7 @@ Customers
 - [ ] Atualizar cliente
 - [ ] Deletar cliente
 
-Projects
+**Projects**
 
 - [ ] Cadastrar projeto
 - [ ] Listar projetos com paginação, ordenação e filtro
@@ -111,7 +114,7 @@ Projects
 - [ ] Deletar projeto
 - [ ] Atualizar status do projeto
 
-Tasks
+**Tasks**
 
 - [ ] Cadastrar tarefa
 - [ ] Listar tarefas com paginação, ordenação e filtro
@@ -120,7 +123,7 @@ Tasks
 - [ ] Deletar tarefa
 - [ ] Atualizar status da tarefa
 
-Registro de horas
+**Registro de horas**
 
 - [ ] Cadastrar registro de horas
 - [ ] Listar registros de horas com paginação, ordenação e filtro
@@ -129,7 +132,7 @@ Registro de horas
 - [ ] Deletar registro de horas
 - [ ] Atualizar status do registro de horas
 
-Contratos
+**Contratos**
 
 - [ ] Cadastrar contrato
 - [ ] Listar contratos com paginação, ordenação e filtro
@@ -138,10 +141,10 @@ Contratos
 - [ ] Deletar contrato
 - [ ] Atualizar status do contrato
 
-Relatórios
+**Relatórios**
 
 - [ ] Gerar relatório de horas por período e por projeto e/ou cliente
 
-Notificações
+**Notificações**
 
 ...
