@@ -138,6 +138,10 @@ Contratos
 - [ ] Deletar contrato
 - [ ] Atualizar status do contrato
 
+Relatórios
+
+- [ ] Gerar relatório de horas por período e por projeto e/ou cliente
+
 Notificações
 
 ...
