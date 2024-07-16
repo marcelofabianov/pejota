@@ -6,6 +6,7 @@ type GetUserInputServiceApplication struct {
 	PublicID string `json:"public_id" validate:"required,uuid"`
 }
 
+// using GetUsersOutputServiceApplication from get_users.go
 type GetUserOutputServiceApplication struct {
 	PublicID     string `json:"public_id"`
 	Name         string `json:"name"`
