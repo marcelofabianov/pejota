@@ -10,8 +10,9 @@ Pejota é um projeto de estudo de GoLang, onde estou desenvolvendo um serviço g
 - (gRPC)[https://grpc.io/]
 - (protocol buffers)[https://developers.google.com/protocol-buffers]
 - (PostgreSQL)[https://www.postgresql.org/]
-- (Viper)[https://pkg.go.dev/github.com/spf13/viper@v1.19.0]
-- (Dig)[https://pkg.go.dev/go.uber.org/dig@v1.17.1]
+- (Viper)[https://pkg.go.dev/github.com/spf13/viper]
+- (Dig)[https://pkg.go.dev/go.uber.org/dig]
+- (Zap)[https://pkg.go.dev/go.uber.org/zap]
 - (Argo2 com Crypto)[golang.org/x/crypto]
 - (RabbitMQ)[https://www.rabbitmq.com/]
 
