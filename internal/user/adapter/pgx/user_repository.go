@@ -207,7 +207,7 @@ func (r *UserRepository) DisableUserLogin(input port.DisableUserLoginInputReposi
 	sql := `
 		UPDATE users
 		SET login_enabled = false, updated_at = $1
-		WHERE public_id = $2
+		WHERE public_id = $2 and deleted_at IS NULL
 		RETURNING public_id, login_enabled
 	`
 
@@ -231,7 +231,7 @@ func (r *UserRepository) EnableUserLogin(input port.EnableUserLoginInputReposito
 	sql := `
 		UPDATE users
 		SET login_enabled = true, updated_at = $1
-		WHERE public_id = $2
+		WHERE public_id = $2 and deleted_at IS NULL
 		RETURNING public_id, login_enabled
 	`
 
