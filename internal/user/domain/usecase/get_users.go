@@ -39,7 +39,7 @@ func (u *GetUsersUseCase) Execute(input port.GetUsersInputUseCase) (port.GetUser
 			LoginEnabled: user.LoginEnabled,
 			CreatedAt:    user.CreatedAt,
 			UpdatedAt:    user.UpdatedAt,
-		})
+		}) //lint:ignore S1016 Supress staticcheck warning for struct literal
 	}
 
 	return output, nil

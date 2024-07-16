@@ -164,3 +164,21 @@ func (s *UserServiceServer) UpdateUser(ctx context.Context, req *userpb.UpdateUs
 		UpdatedAt:    timestamppb.New(updatedAt),
 	}, nil
 }
+
+func (s *UserServiceServer) DisableUserLogin(ctx context.Context, req *userpb.DisableUserLoginRequest) (*userpb.DisableUserLoginResponse, error) {
+	publicID := req.GetPublicId()
+
+	input := port.DisableUserLoginInputServiceApplication{
+		PublicID: publicID,
+	}
+
+	user, err := s.application.DisableUserLogin(input)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "user not found with public_id: %s", publicID)
+	}
+
+	return &userpb.DisableUserLoginResponse{
+		PublicId:     user.PublicID,
+		LoginEnabled: user.LoginEnabled,
+	}, nil
+}

@@ -12,6 +12,7 @@ service UserService {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc DisableUserLogin(DisableUserLoginRequest) returns (DisableUserLoginResponse);
 }
 
 message GetUserRequest {
@@ -81,4 +82,13 @@ message GetUsersRequest {
 message GetUsersResponse {
   repeated GetUserResponse users = 1;
   int32 total = 2;
+}
+
+message DisableUserLoginRequest {
+  string public_id = 1;
+}
+
+message DisableUserLoginResponse {
+  string public_id = 1;
+  bool login_enabled = 2;
 }

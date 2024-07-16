@@ -25,36 +25,3 @@ type User struct {
 	UpdatedAt    time.Time  `json:"updated_at" validate:"required,datetime"`
 	DeletedAt    *time.Time `json:"deleted_at" validate:"omitempty,datetime"`
 }
-
-func (u *User) Delete() {
-	now := time.Now()
-	u.DeletedAt = &now
-}
-
-func (u *User) IsDeleted() bool {
-	return u.DeletedAt != nil
-}
-
-func (u *User) IsNotDeleted() bool {
-	return u.DeletedAt == nil
-}
-
-func (u *User) EnableLogin() {
-	u.LoginEnabled = true
-}
-
-func (u *User) DisableLogin() {
-	u.LoginEnabled = false
-}
-
-func (u *User) IsLoginEnabled() bool {
-	return u.LoginEnabled
-}
-
-func (u *User) IsNotLoginEnabled() bool {
-	return !u.LoginEnabled
-}
-
-func (u *User) IsRole(role Role) bool {
-	return u.Role == role
-}

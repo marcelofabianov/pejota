@@ -3,15 +3,30 @@ package application
 import "github.com/marcelofabianov/pejota/internal/user/port"
 
 type UserServiceApplication struct {
-	getUsers   port.GetUsersUseCase
-	getUser    port.GetUserUseCase
-	createUser port.CreateUserUseCase
-	deleteUser port.DeleteUserUseCase
-	updateUser port.UpdateUserUseCase
+	getUsers         port.GetUsersUseCase
+	getUser          port.GetUserUseCase
+	createUser       port.CreateUserUseCase
+	deleteUser       port.DeleteUserUseCase
+	updateUser       port.UpdateUserUseCase
+	disableUserLogin port.DisableUserLoginUseCase
 }
 
-func NewUserServiceApplication(getUsers port.GetUsersUseCase, getUser port.GetUserUseCase, createUser port.CreateUserUseCase, deleteUser port.DeleteUserUseCase, updateUser port.UpdateUserUseCase) port.UserServiceApplication {
-	return &UserServiceApplication{getUsers, getUser, createUser, deleteUser, updateUser}
+func NewUserServiceApplication(
+	getUsers port.GetUsersUseCase,
+	getUser port.GetUserUseCase,
+	createUser port.CreateUserUseCase,
+	deleteUser port.DeleteUserUseCase,
+	updateUser port.UpdateUserUseCase,
+	disableUserLogin port.DisableUserLoginUseCase,
+) port.UserServiceApplication {
+	return &UserServiceApplication{
+		getUsers,
+		getUser,
+		createUser,
+		deleteUser,
+		updateUser,
+		disableUserLogin,
+	}
 }
 
 func (s *UserServiceApplication) GetUsers(input port.GetUsersInputServiceApplication) (port.GetUsersOutputServiceApplication, error) {
@@ -95,4 +110,20 @@ func (s *UserServiceApplication) UpdateUser(input port.UpdateUserInputServiceApp
 		CreatedAt:    outputUseCase.CreatedAt,
 		UpdatedAt:    outputUseCase.UpdatedAt,
 	}, nil
+}
+
+func (s *UserServiceApplication) DisableUserLogin(input port.DisableUserLoginInputServiceApplication) (port.DisableUserLoginOutputServiceApplication, error) {
+	inputUseCase := port.DisableUserLoginInputUseCase{DisableUserLoginInputServiceApplication: input}
+
+	outputUseCase, err := s.disableUserLogin.Execute(inputUseCase)
+	if err != nil {
+		return port.DisableUserLoginOutputServiceApplication{}, err
+	}
+
+	output := port.DisableUserLoginOutputServiceApplication{
+		PublicID:     outputUseCase.PublicID,
+		LoginEnabled: outputUseCase.LoginEnabled,
+	}
+
+	return output, nil
 }
