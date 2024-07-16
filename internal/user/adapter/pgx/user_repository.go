@@ -159,7 +159,7 @@ func (r *UserRepository) FindUserIDByPublicID(input port.FindUserIDByPublicIDInp
 }
 
 func (r *UserRepository) DeleteUser(input port.DeleteUserInputRepository) (port.DeleteUserOutputRepository, error) {
-	sql := `UPDATE users SET deleted_at = $1 WHERE id = $2 RETURNING true`
+	sql := `UPDATE users SET deleted_at = $1, login_enabled = false WHERE id = $2 RETURNING true`
 
 	_, err := r.db.Exec(context.Background(), sql, input.DeletedAt, input.ID)
 
