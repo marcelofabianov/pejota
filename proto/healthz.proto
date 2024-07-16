@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package healthz;
+
+option go_package = "github.com/marcelofabianov/pejota/internal/user/adapter/gprc/generated";
+
+service Healthz {
+  rpc Check(CheckRequest) returns (CheckResponse);
+}
+
+message CheckRequest {
+  string token = 1;
+}
+
+message CheckResponse {
+  enum Status {
+    UNKNOWN = 0;
+    OK = 1;           // A aplicação está saudável
+    DEGRADED = 2;     // A aplicação está funcionando, mas com problemas menores
+    ERROR = 3;        // A aplicação está com erro
+  }
+
+  Status status = 1;
+  string message = 2;
+}
