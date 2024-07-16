@@ -9,6 +9,7 @@ type UserServiceApplication struct {
 	deleteUser       port.DeleteUserUseCase
 	updateUser       port.UpdateUserUseCase
 	disableUserLogin port.DisableUserLoginUseCase
+	enableUserLogin  port.EnableUserLoginUseCase
 }
 
 func NewUserServiceApplication(
@@ -18,6 +19,7 @@ func NewUserServiceApplication(
 	deleteUser port.DeleteUserUseCase,
 	updateUser port.UpdateUserUseCase,
 	disableUserLogin port.DisableUserLoginUseCase,
+	enableUserLogin port.EnableUserLoginUseCase,
 ) port.UserServiceApplication {
 	return &UserServiceApplication{
 		getUsers,
@@ -26,6 +28,7 @@ func NewUserServiceApplication(
 		deleteUser,
 		updateUser,
 		disableUserLogin,
+		enableUserLogin,
 	}
 }
 
@@ -121,6 +124,22 @@ func (s *UserServiceApplication) DisableUserLogin(input port.DisableUserLoginInp
 	}
 
 	output := port.DisableUserLoginOutputServiceApplication{
+		PublicID:     outputUseCase.PublicID,
+		LoginEnabled: outputUseCase.LoginEnabled,
+	}
+
+	return output, nil
+}
+
+func (s *UserServiceApplication) EnableUserLogin(input port.EnableUserLoginInputServiceApplication) (port.EnableUserLoginOutputServiceApplication, error) {
+	inputUseCase := port.EnableUserLoginInputUseCase{EnableUserLoginInputServiceApplication: input}
+
+	outputUseCase, err := s.enableUserLogin.Execute(inputUseCase)
+	if err != nil {
+		return port.EnableUserLoginOutputServiceApplication{}, err
+	}
+
+	output := port.EnableUserLoginOutputServiceApplication{
 		PublicID:     outputUseCase.PublicID,
 		LoginEnabled: outputUseCase.LoginEnabled,
 	}

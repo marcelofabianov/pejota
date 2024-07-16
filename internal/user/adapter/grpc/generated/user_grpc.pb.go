@@ -25,6 +25,7 @@ const (
 	UserService_DeleteUser_FullMethodName       = "/user.UserService/DeleteUser"
 	UserService_UpdateUser_FullMethodName       = "/user.UserService/UpdateUser"
 	UserService_DisableUserLogin_FullMethodName = "/user.UserService/DisableUserLogin"
+	UserService_EnableUserLogin_FullMethodName  = "/user.UserService/EnableUserLogin"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -37,6 +38,7 @@ type UserServiceClient interface {
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	DisableUserLogin(ctx context.Context, in *DisableUserLoginRequest, opts ...grpc.CallOption) (*DisableUserLoginResponse, error)
+	EnableUserLogin(ctx context.Context, in *EnableUserLoginRequest, opts ...grpc.CallOption) (*EnableUserLoginResponse, error)
 }
 
 type userServiceClient struct {
@@ -107,6 +109,16 @@ func (c *userServiceClient) DisableUserLogin(ctx context.Context, in *DisableUse
 	return out, nil
 }
 
+func (c *userServiceClient) EnableUserLogin(ctx context.Context, in *EnableUserLoginRequest, opts ...grpc.CallOption) (*EnableUserLoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EnableUserLoginResponse)
+	err := c.cc.Invoke(ctx, UserService_EnableUserLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -117,6 +129,7 @@ type UserServiceServer interface {
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	DisableUserLogin(context.Context, *DisableUserLoginRequest) (*DisableUserLoginResponse, error)
+	EnableUserLogin(context.Context, *EnableUserLoginRequest) (*EnableUserLoginResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -141,6 +154,9 @@ func (UnimplementedUserServiceServer) UpdateUser(context.Context, *UpdateUserReq
 }
 func (UnimplementedUserServiceServer) DisableUserLogin(context.Context, *DisableUserLoginRequest) (*DisableUserLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DisableUserLogin not implemented")
+}
+func (UnimplementedUserServiceServer) EnableUserLogin(context.Context, *EnableUserLoginRequest) (*EnableUserLoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnableUserLogin not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -263,6 +279,24 @@ func _UserService_DisableUserLogin_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_EnableUserLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EnableUserLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).EnableUserLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_EnableUserLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).EnableUserLogin(ctx, req.(*EnableUserLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -293,6 +327,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DisableUserLogin",
 			Handler:    _UserService_DisableUserLogin_Handler,
+		},
+		{
+			MethodName: "EnableUserLogin",
+			Handler:    _UserService_EnableUserLogin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
