@@ -36,7 +36,7 @@ type GetUsersInputRepository struct {
 	Page   int
 	Limit  int
 	Order  string
-	Search string
+	Search *string
 }
 
 type GetUsersOutputRepository struct {

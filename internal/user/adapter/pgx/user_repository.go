@@ -17,6 +17,63 @@ func NewUserRepository(db *pgx.Conn) port.UserRepository {
 	return &UserRepository{db}
 }
 
+func (r *UserRepository) GetUsers(input port.GetUsersInputRepository) (port.GetUsersOutputRepository, error) {
+	sql := `
+		SELECT public_id, name, email, role, login_enabled, created_at, updated_at
+		FROM users
+		WHERE deleted_at IS NULL
+	`
+
+	if input.Search != nil {
+		sql += ` AND (name ILIKE '%' || $1 || '%' OR email ILIKE '%' || $1 || '%')`
+	}
+
+	sql += ` ORDER BY created_at ` + input.Order + ` OFFSET $2 LIMIT $3`
+
+	rows, err := r.db.Query(context.Background(), sql, input.Search, (input.Page-1)*input.Limit, input.Limit)
+	if err != nil {
+		return port.GetUsersOutputRepository{}, err
+	}
+	defer rows.Close()
+
+	var users []port.GetUserOutputRepository
+	for rows.Next() {
+		var user domain.User
+		err := rows.Scan(&user.PublicID, &user.Name, &user.Email, &user.Role, &user.LoginEnabled, &user.CreatedAt, &user.UpdatedAt)
+		if err != nil {
+			return port.GetUsersOutputRepository{}, err
+		}
+
+		users = append(users, port.GetUserOutputRepository{
+			PublicID:     user.PublicID,
+			Name:         user.Name,
+			Email:        user.Email,
+			Role:         string(user.Role),
+			LoginEnabled: user.LoginEnabled,
+			CreatedAt:    user.CreatedAt.Format(time.RFC3339),
+			UpdatedAt:    user.UpdatedAt.Format(time.RFC3339),
+		})
+	}
+
+	sql = `SELECT COUNT(*) FROM users WHERE deleted_at IS NULL`
+	if input.Search != nil {
+		sql += ` AND (name ILIKE '%' || $1 || '%' OR email ILIKE '%' || $1 || '%')`
+	}
+
+	var totals int
+	err = r.db.QueryRow(context.Background(), sql, input.Search).Scan(&totals)
+	if err != nil {
+		return port.GetUsersOutputRepository{}, err
+	}
+
+	output := port.GetUsersOutputRepository{
+		Users:  users,
+		Totals: totals,
+	}
+
+	return output, nil
+}
+
 func (r *UserRepository) GetUser(input port.GetUserInputRepository) (port.GetUserOutputRepository, error) {
 	sql := `
 		SELECT public_id, name, email, role, login_enabled, created_at, updated_at
