@@ -74,6 +74,8 @@ message UpdateUserResponse {
 message GetUsersRequest {
   int32 page = 1;
   int32 limit = 2;
+  string order = 3;
+  string search = 4;
 }
 
 message GetUsersResponse {
