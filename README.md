@@ -29,9 +29,9 @@ A arquitetura do projeto é baseada no Clean Architecture e Ports and Adapters.
 
 ## Requisitos
 
-- (GoLang)[https://golang.org/]
-- (Docker)[https://www.docker.com/]
-- (Git)[https://git-scm.com/]
+- [GoLand](https://golang.org/)
+- [Docker](https://www.docker.com/)
+- [Git](https://git-scm.com/)
 
 ## Estrutura
 
