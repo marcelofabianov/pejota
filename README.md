@@ -85,7 +85,7 @@ Até o momento, a estrutura do projeto está da seguinte forma:
     └── user.proto
 ```
 
-## Funcionalidades
+## Requisitos Funcionais
 
 **Users**
 
@@ -148,3 +148,49 @@ Até o momento, a estrutura do projeto está da seguinte forma:
 **Notificações**
 
 ...
+
+**Autenticação**
+
+...
+
+**Autorização**
+
+...
+
+## Requisitos Não Funcionais
+
+- [ ] Autenticação e autorização com Keycloak
+- [ ] Log com Zap
+- [ ] Monitoramento com Prometheus
+- [ ] Tracing com Jaeger
+- [ ] Eventos com RabbitMQ
+- [ ] Envio de e-mails a definir
+
+## Executando o projeto
+
+Para executar o projeto, siga os passos abaixo:
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/marcelofabianov/pejota.git
+```
+
+2. Suba o banco de dados e o RabbitMQ:
+
+```bash
+docker-compose up -d
+```
+
+3. Execute o comando para aplicar as migrations:
+
+**Obs.:** Instale a ferramenta Goose para executar as migrations consultando o [Site](https://pressly.github.io/goose/installation/)
+
+```bash
+export DATABASE_URL="postgresql://username:password@localhost:5432/pejota_db"
+```
+Após configurar a variável de ambiente, execute o comando abaixo:
+
+```bash
+goose -dir migrations postgres "$DATABASE_URL" up
+```
