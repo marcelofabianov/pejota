@@ -62,6 +62,10 @@ func registerUseCases(container *dig.Container) {
 	container.Provide(func(repo port.UserRepository) port.DisableUserLoginUseCase {
 		return usecase.NewDisableUserLoginUseCase(repo)
 	})
+
+	container.Provide(func(repo port.UserRepository) port.EnableUserLoginUseCase {
+		return usecase.NewEnableUserLoginUseCase(repo)
+	})
 }
 
 func registerService(container *dig.Container) {
@@ -72,6 +76,7 @@ func registerService(container *dig.Container) {
 		deleteUser port.DeleteUserUseCase,
 		updateUser port.UpdateUserUseCase,
 		disableUserLogin port.DisableUserLoginUseCase,
+		enableUserLogin port.EnableUserLoginUseCase,
 	) port.UserServiceApplication {
 		return application.NewUserServiceApplication(
 			getUsers,
@@ -80,6 +85,7 @@ func registerService(container *dig.Container) {
 			deleteUser,
 			updateUser,
 			disableUserLogin,
+			enableUserLogin,
 		)
 	})
 }

@@ -182,3 +182,21 @@ func (s *UserServiceServer) DisableUserLogin(ctx context.Context, req *userpb.Di
 		LoginEnabled: user.LoginEnabled,
 	}, nil
 }
+
+func (s *UserServiceServer) EnableUserLogin(ctx context.Context, req *userpb.EnableUserLoginRequest) (*userpb.EnableUserLoginResponse, error) {
+	publicID := req.GetPublicId()
+
+	input := port.EnableUserLoginInputServiceApplication{
+		PublicID: publicID,
+	}
+
+	user, err := s.application.EnableUserLogin(input)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "user not found with public_id: %s", publicID)
+	}
+
+	return &userpb.EnableUserLoginResponse{
+		PublicId:     user.PublicID,
+		LoginEnabled: user.LoginEnabled,
+	}, nil
+}
