@@ -62,15 +62,15 @@ func (r *UserRepository) GetUsers(input port.GetUsersInputRepository) (port.GetU
 	}
 
 	// Count total of users
-	var totals int
+	var total int
 
 	sql = `SELECT COUNT(*) FROM users WHERE deleted_at IS NULL`
 
 	if input.Search != nil && *input.Search != "" {
 		sql += ` AND (name ILIKE '%' || $1 || '%' OR email ILIKE '%' || $1 || '%')`
-		err = r.db.QueryRow(context.Background(), sql, *input.Search).Scan(&totals)
+		err = r.db.QueryRow(context.Background(), sql, *input.Search).Scan(&total)
 	} else {
-		err = r.db.QueryRow(context.Background(), sql).Scan(&totals)
+		err = r.db.QueryRow(context.Background(), sql).Scan(&total)
 	}
 
 	if err != nil {
@@ -78,8 +78,8 @@ func (r *UserRepository) GetUsers(input port.GetUsersInputRepository) (port.GetU
 	}
 
 	output := port.GetUsersOutputRepository{
-		Users:  users,
-		Totals: totals,
+		Users: users,
+		Total: total,
 	}
 
 	return output, nil

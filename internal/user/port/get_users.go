@@ -8,8 +8,8 @@ type GetUsersInputServiceApplication struct {
 }
 
 type GetUsersOutputServiceApplication struct {
-	Users  []GetUserOutputServiceApplication `json:"users"`
-	Totals int                               `json:"totals"`
+	Users []GetUserOutputServiceApplication `json:"users"`
+	Total int                               `json:"total"`
 }
 
 type GetUsersServiceApplication interface {
@@ -40,8 +40,8 @@ type GetUsersInputRepository struct {
 }
 
 type GetUsersOutputRepository struct {
-	Users  []GetUserOutputRepository
-	Totals int
+	Users []GetUserOutputRepository
+	Total int
 }
 
 type GetUsersRepository interface {

@@ -23,8 +23,8 @@ func (s *UserServiceApplication) GetUsers(input port.GetUsersInputServiceApplica
 	}
 
 	return port.GetUsersOutputServiceApplication{
-		Users:  outputUseCase.Users,
-		Totals: outputUseCase.Totals,
+		Users: outputUseCase.Users,
+		Total: outputUseCase.Total,
 	}, nil
 }
 

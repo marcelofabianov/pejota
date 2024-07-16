@@ -25,8 +25,8 @@ func (u *GetUsersUseCase) Execute(input port.GetUsersInputUseCase) (port.GetUser
 
 	output := port.GetUsersOutputUseCase{
 		GetUsersOutputServiceApplication: port.GetUsersOutputServiceApplication{
-			Users:  []port.GetUserOutputServiceApplication{},
-			Totals: repositoryOutput.Totals,
+			Users: []port.GetUserOutputServiceApplication{},
+			Total: repositoryOutput.Total,
 		},
 	}
 

@@ -62,7 +62,7 @@ func (s *UserServiceServer) GetUsers(ctx context.Context, req *userpb.GetUsersRe
 
 	return &userpb.GetUsersResponse{
 		Users: usersResponse,
-		Total: int32(users.Totals),
+		Total: int32(users.Total),
 	}, nil
 }
 
