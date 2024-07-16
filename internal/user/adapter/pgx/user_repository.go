@@ -159,7 +159,7 @@ func (r *UserRepository) FindUserIDByPublicID(input port.FindUserIDByPublicIDInp
 }
 
 func (r *UserRepository) DeleteUser(input port.DeleteUserInputRepository) (port.DeleteUserOutputRepository, error) {
-	sql := `UPDATE users SET deleted_at = $1 WHERE id = $2 RETURNING true`
+	sql := `UPDATE users SET deleted_at = $1, login_enabled = false WHERE id = $2 RETURNING true`
 
 	_, err := r.db.Exec(context.Background(), sql, input.DeletedAt, input.ID)
 
@@ -198,6 +198,30 @@ func (r *UserRepository) UpdateUser(input port.UpdateUserInputRepository) (port.
 		LoginEnabled: user.LoginEnabled,
 		CreatedAt:    user.CreatedAt.Format(time.RFC3339),
 		UpdatedAt:    user.UpdatedAt.Format(time.RFC3339),
+	}
+
+	return output, nil
+}
+
+func (r *UserRepository) DisableUserLogin(input port.DisableUserLoginInputRepository) (port.DisableUserLoginOutputRepository, error) {
+	sql := `
+		UPDATE users
+		SET login_enabled = false, updated_at = $1
+		WHERE public_id = $2
+		RETURNING public_id, login_enabled
+	`
+
+	var user domain.User
+	err := r.db.QueryRow(context.Background(), sql, input.UpdatedAt, input.PublicID).
+		Scan(&user.PublicID, &user.LoginEnabled)
+
+	if err != nil {
+		return port.DisableUserLoginOutputRepository{}, err
+	}
+
+	output := port.DisableUserLoginOutputRepository{
+		PublicID:     user.PublicID,
+		LoginEnabled: user.LoginEnabled,
 	}
 
 	return output, nil
