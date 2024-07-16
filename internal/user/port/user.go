@@ -9,6 +9,7 @@ type UserRepository interface {
 	DeleteUserRepository
 	UpdateUserRepository
 	DisableUserLoginRepository
+	EnableUserLoginRepository
 }
 
 // Service
@@ -20,4 +21,5 @@ type UserServiceApplication interface {
 	DeleteUserServiceApplication
 	UpdateUserServiceApplication
 	DisableUserLoginServiceApplication
+	EnableUserLoginServiceApplication
 }
