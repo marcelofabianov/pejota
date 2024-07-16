@@ -22,6 +22,50 @@ func NewUserServiceServer(application port.UserServiceApplication) *UserServiceS
 	}
 }
 
+func (s *UserServiceServer) GetUsers(ctx context.Context, req *userpb.GetUsersRequest) (*userpb.GetUsersResponse, error) {
+	page := int(req.GetPage())
+	limit := int(req.GetLimit())
+	order := req.GetOrder()
+
+	var search *string
+	if req.GetSearch() != "" {
+		search = &req.Search
+	}
+
+	input := port.GetUsersInputServiceApplication{
+		Page:   page,
+		Limit:  limit,
+		Order:  order,
+		Search: search,
+	}
+
+	users, err := s.application.GetUsers(input)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "error getting users: %v", err)
+	}
+
+	var usersResponse []*userpb.GetUserResponse
+	for _, user := range users.Users {
+		createdAt, _ := time.Parse(time.RFC3339, user.CreatedAt)
+		updatedAt, _ := time.Parse(time.RFC3339, user.UpdatedAt)
+
+		usersResponse = append(usersResponse, &userpb.GetUserResponse{
+			PublicId:     user.PublicID,
+			Name:         user.Name,
+			Email:        user.Email,
+			Role:         user.Role,
+			LoginEnabled: user.LoginEnabled,
+			CreatedAt:    timestamppb.New(createdAt),
+			UpdatedAt:    timestamppb.New(updatedAt),
+		})
+	}
+
+	return &userpb.GetUsersResponse{
+		Users: usersResponse,
+		Total: int32(users.Totals),
+	}, nil
+}
+
 func (s *UserServiceServer) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*userpb.GetUserResponse, error) {
 	publicID := req.GetPublicId()
 

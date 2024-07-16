@@ -72,10 +72,10 @@ message UpdateUserResponse {
 }
 
 message GetUsersRequest {
-  int32 page = 1;
-  int32 limit = 2;
-  string order = 3;
-  string search = 4;
+  int32 page = 1; // starts at 1
+  int32 limit = 2; // default 50
+  string order = 3; // asc or desc
+  string search = 4; // search text optional
 }
 
 message GetUsersResponse {
