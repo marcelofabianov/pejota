@@ -2,6 +2,7 @@ package pgx
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -23,14 +24,19 @@ func (r *UserRepository) GetUsers(input port.GetUsersInputRepository) (port.GetU
 		FROM users
 		WHERE deleted_at IS NULL
 	`
+	args := []interface{}{}
+	argPos := 1
 
-	if input.Search != nil {
-		sql += ` AND (name ILIKE '%' || $1 || '%' OR email ILIKE '%' || $1 || '%')`
+	if input.Search != nil && *input.Search != "" {
+		sql += ` AND (name ILIKE '%' || $` + fmt.Sprint(argPos) + ` || '%' OR email ILIKE '%' || $` + fmt.Sprint(argPos) + ` || '%')`
+		args = append(args, *input.Search)
+		argPos++
 	}
 
-	sql += ` ORDER BY created_at ` + input.Order + ` OFFSET $2 LIMIT $3`
+	sql += ` ORDER BY created_at ` + input.Order + ` OFFSET $` + fmt.Sprint(argPos) + ` LIMIT $` + fmt.Sprint(argPos+1)
+	args = append(args, (input.Page-1)*input.Limit, input.Limit)
 
-	rows, err := r.db.Query(context.Background(), sql, input.Search, (input.Page-1)*input.Limit, input.Limit)
+	rows, err := r.db.Query(context.Background(), sql, args...)
 	if err != nil {
 		return port.GetUsersOutputRepository{}, err
 	}
@@ -55,13 +61,18 @@ func (r *UserRepository) GetUsers(input port.GetUsersInputRepository) (port.GetU
 		})
 	}
 
+	// Count total of users
+	var totals int
+
 	sql = `SELECT COUNT(*) FROM users WHERE deleted_at IS NULL`
-	if input.Search != nil {
+
+	if input.Search != nil && *input.Search != "" {
 		sql += ` AND (name ILIKE '%' || $1 || '%' OR email ILIKE '%' || $1 || '%')`
+		err = r.db.QueryRow(context.Background(), sql, *input.Search).Scan(&totals)
+	} else {
+		err = r.db.QueryRow(context.Background(), sql).Scan(&totals)
 	}
 
-	var totals int
-	err = r.db.QueryRow(context.Background(), sql, input.Search).Scan(&totals)
 	if err != nil {
 		return port.GetUsersOutputRepository{}, err
 	}
