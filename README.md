@@ -202,3 +202,19 @@ Após configurar a variável de ambiente, execute o comando abaixo:
 ```bash
 goose -dir migrations postgres "$DATABASE_URL" up
 ```
+
+4. Executar o projeto:
+
+```bash
+go run cmd/main.go
+```
+
+5. Em caso de atualização do arquivo proto, execute o script para gerar os arquivos necessários:
+
+```bash
+./_scripts/generate_protos.sh
+```
+
+## Autor
+
+- [Marcelo Fabiano](https://www.linkedin.com/in/marcelofabianov/)
