@@ -20,6 +20,12 @@ A arquitetura do projeto é baseada no Clean Architecture e Ports and Adapters.
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [Keycloak](https://www.keycloak.org/)
 - [Docker](https://www.docker.com/)
+- [Prometheus](https://prometheus.io/)
+- [Elasticsearch](https://www.elastic.co/)
+- [Kibana](https://www.elastic.co/)
+- [Jaeger](https://www.jaegertracing.io/)
+- [GitHub Actions](https://docs.github.com/pt/actions)
+- [Redis (?)](https://redis.io/)
 
 ## Requisitos
 
