@@ -39,6 +39,10 @@ func registerRepositories(container *dig.Container, db *pgx.Conn) {
 }
 
 func registerUseCases(container *dig.Container) {
+	container.Provide(func(repo port.UserRepository) port.GetUsersUseCase {
+		return usecase.NewGetUsersUseCase(repo)
+	})
+
 	container.Provide(func(repo port.UserRepository) port.GetUserUseCase {
 		return usecase.NewGetUserUseCase(repo)
 	})
@@ -57,7 +61,7 @@ func registerUseCases(container *dig.Container) {
 }
 
 func registerService(container *dig.Container) {
-	container.Provide(func(getUser port.GetUserUseCase, createUser port.CreateUserUseCase, deleteUser port.DeleteUserUseCase, updateUser port.UpdateUserUseCase) port.UserServiceApplication {
-		return application.NewUserServiceApplication(getUser, createUser, deleteUser, updateUser)
+	container.Provide(func(getUsers port.GetUsersUseCase, getUser port.GetUserUseCase, createUser port.CreateUserUseCase, deleteUser port.DeleteUserUseCase, updateUser port.UpdateUserUseCase) port.UserServiceApplication {
+		return application.NewUserServiceApplication(getUsers, getUser, createUser, deleteUser, updateUser)
 	})
 }
