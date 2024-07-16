@@ -3,14 +3,29 @@ package application
 import "github.com/marcelofabianov/pejota/internal/user/port"
 
 type UserServiceApplication struct {
+	getUsers   port.GetUsersUseCase
 	getUser    port.GetUserUseCase
 	createUser port.CreateUserUseCase
 	deleteUser port.DeleteUserUseCase
 	updateUser port.UpdateUserUseCase
 }
 
-func NewUserServiceApplication(getUser port.GetUserUseCase, createUser port.CreateUserUseCase, deleteUser port.DeleteUserUseCase, updateUser port.UpdateUserUseCase) port.UserServiceApplication {
-	return &UserServiceApplication{getUser, createUser, deleteUser, updateUser}
+func NewUserServiceApplication(getUsers port.GetUsersUseCase, getUser port.GetUserUseCase, createUser port.CreateUserUseCase, deleteUser port.DeleteUserUseCase, updateUser port.UpdateUserUseCase) port.UserServiceApplication {
+	return &UserServiceApplication{getUsers, getUser, createUser, deleteUser, updateUser}
+}
+
+func (s *UserServiceApplication) GetUsers(input port.GetUsersInputServiceApplication) (port.GetUsersOutputServiceApplication, error) {
+	inputUseCase := port.GetUsersInputUseCase{GetUsersInputServiceApplication: input}
+
+	outputUseCase, err := s.getUsers.Execute(inputUseCase)
+	if err != nil {
+		return port.GetUsersOutputServiceApplication{}, err
+	}
+
+	return port.GetUsersOutputServiceApplication{
+		Users:  outputUseCase.Users,
+		Totals: outputUseCase.Totals,
+	}, nil
 }
 
 func (s *UserServiceApplication) GetUser(input port.GetUserInputServiceApplication) (port.GetUserOutputServiceApplication, error) {
