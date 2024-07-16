@@ -1,19 +1,10 @@
 # Pejota
 
-Projeto de estudo de GoLang.
-
 Pejota é um projeto de estudo de GoLang, onde estou desenvolvendo um serviço gRPC para gerenciamento de trabalhos de uma pessoa como PJ.
 
 ## Arquitetura
 
 A arquitetura do projeto é baseada no Clean Architecture e Ports and Adapters.
-
-- **Domain**: Camada onde ficam as regras de negócio da aplicação.
-- **Application**: Camada onde ficam os casos de uso da aplicação.
-- **Adapter**: Camada onde ficam as implementações de entrada e saída da aplicação.
-- **Port**: Camada onde ficam as interfaces que são implementadas pelas camadas de Adapter.
-- **Container**: Camada onde ficam as configurações de injeção de dependência.
-- **Infra**: Camada onde ficam as implementações de infraestrutura da aplicação.
 
 ## Tecnologias
 
@@ -38,6 +29,19 @@ A arquitetura do projeto é baseada no Clean Architecture e Ports and Adapters.
 Até o momento, a estrutura do projeto está da seguinte forma:
 
 ```bash
+.
+├── LICENSE
+├── README.md
+├── _scripts
+│   └── generate_protos.sh
+├── bootstrap
+│   ├── config.yaml
+│   └── viper.go
+├── cmd
+│   └── main.go
+├── docker-compose.yml
+├── go.mod
+├── go.sum
 ├── internal
 │   └── user
 │       ├── adapter
