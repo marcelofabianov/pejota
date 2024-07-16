@@ -226,3 +226,27 @@ func (r *UserRepository) DisableUserLogin(input port.DisableUserLoginInputReposi
 
 	return output, nil
 }
+
+func (r *UserRepository) EnableUserLogin(input port.EnableUserLoginInputRepository) (port.EnableUserLoginOutputRepository, error) {
+	sql := `
+		UPDATE users
+		SET login_enabled = true, updated_at = $1
+		WHERE public_id = $2
+		RETURNING public_id, login_enabled
+	`
+
+	var user domain.User
+	err := r.db.QueryRow(context.Background(), sql, input.UpdatedAt, input.PublicID).
+		Scan(&user.PublicID, &user.LoginEnabled)
+
+	if err != nil {
+		return port.EnableUserLoginOutputRepository{}, err
+	}
+
+	output := port.EnableUserLoginOutputRepository{
+		PublicID:     user.PublicID,
+		LoginEnabled: user.LoginEnabled,
+	}
+
+	return output, nil
+}
