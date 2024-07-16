@@ -7,6 +7,7 @@ option go_package = "github.com/marcelofabianov/pejota/internal/user/adapter/gpr
 import "google/protobuf/timestamp.proto";
 
 service UserService {
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
@@ -68,4 +69,14 @@ message UpdateUserResponse {
   bool login_enabled = 5;
   google.protobuf.Timestamp created_at = 6;
   google.protobuf.Timestamp updated_at = 7;
+}
+
+message GetUsersRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message GetUsersResponse {
+  repeated GetUserResponse users = 1;
+  int32 total = 2;
 }
